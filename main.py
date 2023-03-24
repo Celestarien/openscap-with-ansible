@@ -66,6 +66,7 @@ def audit_openscap(host):
     # output, error = process.communicate()
 
     # Scan
+    print('s')
     bashCommand = f"export SSH_ADDITIONAL_OPTIONS='-i {ssh_key_path}' && ./oscap-ssh {ssh_user}@{ip_adress} 22 {type_eval} eval --report report_{name}.html --profile {profile_openscap} /usr/share/xml/scap/ssg/content/ssg-{os}-{type_eval}.xml"
     process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, shell=True)
     output, error = process.communicate()
@@ -98,32 +99,38 @@ ansible_python_interpreter=/usr/bin/python3
 
 
 if __name__ == '__main__':
-    check_hosts_file_exist()
 
-    with open('./hosts.txt', 'r') as hosts_file:
-        hosts = hosts_file.readlines()
-        count_hosts = len(hosts)
-    
-    print(f"""
+    while True :
+        check_hosts_file_exist()
 
-    What do you want to do ?
+        with open('./hosts.txt', 'r') as hosts_file:
+            hosts = hosts_file.readlines()
+            count_hosts = len(hosts)
+        
+        print(f"""
 
-    1 - Audit with OpenSCAP
-    2 - Apply security measures with Ansible
-    3 - Install security guides
+        What do you want to do ?
 
-    Host(s) found : {count_hosts}
-    """)
-    choice = input('Enter a number : ')
-    match choice:
-        case '1':
-            for host in hosts :
-                audit_openscap(host)
-        case '2':
-            for host in hosts :
-                apply_security_with_ansible(host)
-        case '3':
-            install_security_guides()
+        1 - Audit with OpenSCAP
+        2 - Apply security measures with Ansible
+        3 - Install security guides
+
+        4 - Exit
+
+        Host(s) found : {count_hosts}
+        """)
+        choice = input('Enter a number : ')
+        match choice:
+            case '1':
+                for host in hosts :
+                    audit_openscap(host)
+            case '2':
+                for host in hosts :
+                    apply_security_with_ansible(host)
+            case '3':
+                install_security_guides()
+            case '4' :
+                exit()
 
 
     # # Ansible
