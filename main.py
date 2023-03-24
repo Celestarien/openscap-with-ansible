@@ -60,26 +60,20 @@ def audit_openscap(host):
     profile_openscap = str(host).split('|')[5]
     type_eval = str(host).split('|')[6]
 
-    # Add SSH key in var
-    # bashCommand = f"export "
-    # process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, shell=True)
-    # output, error = process.communicate()
-
-    # Scan
-    print('Scan and report')
+    # Creating a report
+    print(f'Creating a report for {name}')
     bashCommand = f"export SSH_ADDITIONAL_OPTIONS='-i {ssh_key_path}' && ./oscap-ssh {ssh_user}@{ip_adress} 22 {type_eval} eval --report report_{name}.html --profile {profile_openscap} /usr/share/xml/scap/ssg/content/ssg-{os}-{type_eval}.xml"
     process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, shell=True)
     output, error = process.communicate()
-    print(iter(process.stdout.readlines()))
 
     # Compliance
-    print('Compliance')
+    print(f'Production of a compliance check report for {name}')
     bashCommand = f"oscap {type_eval} eval --profile {profile_openscap} --results report_{name}.xml /usr/share/xml/scap/ssg/content/ssg-{os}-{type_eval}.xml"
     process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
 
     # Ansible file
-    print('Ansible file')
+    print(f'Creating the ansible file for {name}')
     bashCommand = f"oscap {type_eval} generate fix --fix-type ansible --profile {profile_openscap} --output remediation_{name}.yml report_{name}.xml"
     process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
@@ -96,9 +90,11 @@ def apply_security_with_ansible(host):
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
 """)
+    print(f'Apply security measures with Ansible {name}...')
     bashCommand = f"ansible-playbook remediation_{name}.yml -i ansible_hosts"
     process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
+    print(f'{name} : Success')
 
 
 if __name__ == '__main__':
@@ -134,13 +130,3 @@ if __name__ == '__main__':
                 install_security_guides()
             case '4' :
                 exit()
-
-
-    # # Ansible
-    # with open('./ansible_hosts', 'w', encoding='utf-8') as hosts_file_ansible :
-    #     hosts_file_ansible.write("[servers]\n")
-    # for host in hosts:
-    #     generate_ansible_hosts_file(host)
-    # with open('./ansible_hosts', 'w', encoding='utf-8') as hosts_file_ansible :
-    #     hosts_file_ansible.write("""
-    #     """)
