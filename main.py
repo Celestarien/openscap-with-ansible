@@ -1,5 +1,5 @@
 from os.path import exists
-from subprocess import Popen, PIPE
+import subprocess
 
 
 def check_hosts_file_exist():
@@ -47,7 +47,7 @@ def install_security_guides():
             bashCommand = "apt install ssg-nondebian"
         case '5':
             bashCommand = "apt install ssg-applications"
-    process = Popen(bashCommand.split(), stdout=PIPE)
+    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
 
 
@@ -62,22 +62,22 @@ def audit_openscap(host):
 
     # Add SSH key in var
     bashCommand = f"export SSH_ADDITIONAL_OPTIONS='-i {ssh_key_path}'"
-    process = Popen(bashCommand.split(), stdout=PIPE)
+    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
 
     # Scan
     bashCommand = f"./oscap-ssh {ssh_user}@{ip_adress} 22 {type_eval} eval --report report_{name}.html --profile {profile_openscap} /usr/share/xml/scap/ssg/content/ssg-{os}-{type_eval}.xml"
-    process = Popen(bashCommand.split(), stdout=PIPE)
+    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
     
     # Compliance
     bashCommand = f"oscap {type_eval} eval --profile {profile_openscap} --results report_{name}.xml /usr/share/xml/scap/ssg/content/ssg-{os}-{type_eval}.xml"
-    process = Popen(bashCommand.split(), stdout=PIPE)
+    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
     
     # Ansible file
     bashCommand = f"oscap {type_eval} generate fix --fix-type ansible --profile {profile_openscap} --output remediation_{name}.yml report_{name}.xml"
-    process = Popen(bashCommand.split(), stdout=PIPE)
+    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
 
 
@@ -93,7 +93,7 @@ def apply_security_with_ansible(host):
 ansible_python_interpreter=/usr/bin/python3
 """)
     bashCommand = f"ansible-playbook remediation_{name}.yml -i ansible_hosts"
-    process = Popen(bashCommand.split(), stdout=PIPE)
+    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
 
 
