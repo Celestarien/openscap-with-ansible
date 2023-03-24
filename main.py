@@ -70,14 +70,15 @@ def audit_openscap(host):
     bashCommand = f"export SSH_ADDITIONAL_OPTIONS='-i {ssh_key_path}' && ./oscap-ssh {ssh_user}@{ip_adress} 22 {type_eval} eval --report report_{name}.html --profile {profile_openscap} /usr/share/xml/scap/ssg/content/ssg-{os}-{type_eval}.xml"
     process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, shell=True)
     output, error = process.communicate()
-    print(error)
     
     # Compliance
+    print('Compliance')
     bashCommand = f"oscap {type_eval} eval --profile {profile_openscap} --results report_{name}.xml /usr/share/xml/scap/ssg/content/ssg-{os}-{type_eval}.xml"
     process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
     
     # Ansible file
+    print('Ansible file')
     bashCommand = f"oscap {type_eval} generate fix --fix-type ansible --profile {profile_openscap} --output remediation_{name}.yml report_{name}.xml"
     process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
