@@ -67,7 +67,7 @@ def audit_openscap(host):
 
     # Scan
     bashCommand = f"SSH_ADDITIONAL_OPTIONS='-i {ssh_key_path}' ./oscap-ssh {ssh_user}@{ip_adress} 22 {type_eval} eval --report report_{name}.html --profile {profile_openscap} /usr/share/xml/scap/ssg/content/ssg-{os}-{type_eval}.xml"
-    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, shell=True)
     output, error = process.communicate()
     
     # Compliance
