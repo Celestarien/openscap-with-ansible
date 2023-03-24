@@ -61,12 +61,12 @@ def audit_openscap(host):
     type_eval = str(host).split('|')[6]
 
     # Add SSH key in var
-    bashCommand = f"export SSH_ADDITIONAL_OPTIONS='-i {ssh_key_path}'"
-    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, shell=True)
-    output, error = process.communicate()
+    # bashCommand = f"export "
+    # process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, shell=True)
+    # output, error = process.communicate()
 
     # Scan
-    bashCommand = f"./oscap-ssh {ssh_user}@{ip_adress} 22 {type_eval} eval --report report_{name}.html --profile {profile_openscap} /usr/share/xml/scap/ssg/content/ssg-{os}-{type_eval}.xml"
+    bashCommand = f"SSH_ADDITIONAL_OPTIONS='-i {ssh_key_path}' ./oscap-ssh {ssh_user}@{ip_adress} 22 {type_eval} eval --report report_{name}.html --profile {profile_openscap} /usr/share/xml/scap/ssg/content/ssg-{os}-{type_eval}.xml"
     process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
     
