@@ -62,7 +62,7 @@ def audit_openscap(host):
 
     # Add SSH key in var
     bashCommand = f"export SSH_ADDITIONAL_OPTIONS='-i {ssh_key_path}'"
-    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, shell=True)
     output, error = process.communicate()
 
     # Scan
