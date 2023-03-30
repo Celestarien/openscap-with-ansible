@@ -1,1 +1,1 @@
-employee1|192.168.56.104|root|debian8|/home/test/ansible-key|anssi_np_nt28_high|xccdf
+employee1|192.168.56.104|root|debian10|/home/test/ansible-key|xccdf_org.ssgproject.content_profile_anssi_np_nt28_high|xccdf

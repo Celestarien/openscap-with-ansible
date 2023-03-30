@@ -68,9 +68,11 @@ def audit_openscap(host):
 
     # Compliance
     print(f'Production of a compliance check report for {name}')
-    bashCommand = f"oscap {type_eval} eval --profile {profile_openscap} --results report_{name}.xml /usr/share/xml/scap/ssg/content/ssg-{os}-{type_eval}.xml"
+    bashCommand = f"oscap {type_eval} eval --profile {profile_openscap} --results report_{name}.xml /usr/share/xml/scap/ssg/content/ssg-{os}-ds.xml"
     process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
+
+    print(subprocess.check_output(process))
 
     # Ansible file
     print(f'Creating the ansible file for {name}')
