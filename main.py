@@ -65,6 +65,8 @@ def audit_openscap(host):
     bashCommand = f"export SSH_ADDITIONAL_OPTIONS='-i {ssh_key_path}' && ./oscap-ssh {ssh_user}@{ip_adress} 22 {type_eval} eval --report report_{name}.html --profile {profile_openscap} /usr/share/xml/scap/ssg/content/ssg-{os}-{type_eval}.xml"
     process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, shell=True)
     output, error = process.communicate()
+    
+    print(subprocess.check_output(process))
 
     # Compliance
     print(f'Production of a compliance check report for {name}')
@@ -72,7 +74,6 @@ def audit_openscap(host):
     process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
 
-    print(subprocess.check_output(process))
 
     # Ansible file
     print(f'Creating the ansible file for {name}')
