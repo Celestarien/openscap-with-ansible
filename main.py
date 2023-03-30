@@ -63,10 +63,9 @@ def audit_openscap(host):
     # Creating a report
     print(f'Creating a report for {name}')
     bashCommand = f"export SSH_ADDITIONAL_OPTIONS='-i {ssh_key_path}' && ./oscap-ssh {ssh_user}@{ip_adress} 22 {type_eval} eval --report report_{name}.html --profile {profile_openscap} /usr/share/xml/scap/ssg/content/ssg-{os}-{type_eval}.xml"
-    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    output, error = process.communicate()
+    process = subprocess.check_output(bashCommand, stderr=subprocess.STDOUT, shell=True)
+    # output, error = process.communicate()
 
-    print(output.decode())
 
     # Compliance
     print(f'Production of a compliance check report for {name}')
