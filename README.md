@@ -15,8 +15,6 @@ A script that orchestrates OpenSCAP and Ansible
   ```
   The OpenSCAP SSH script **must be** in the same folder as this script
 
- - Security guide for your machines (I had trouble installing security guides for Debian 10 and 11, but [this tutorial](https://itnixpro.com/install-openscap-on-debian-11/) worked for me)
-
 ## Environment tested
 
 - Debian 10
