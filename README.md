@@ -4,7 +4,6 @@ A script that orchestrates OpenSCAP and Ansible
 
 ## Requirements
 
-- Python 3.10 (minimum) : [This tutorial worked for me](https://tecadmin.net/how-to-install-python-3-10-on-debian-11/)
 - Ansible
 - OpenSCAP (need to be on all your machines and your self too)
 - OpenSCAP SSH script ([More Informations](https://wiki.debian.org/UsingSCAP)) :  
@@ -17,10 +16,16 @@ A script that orchestrates OpenSCAP and Ansible
 
 ## Environment tested
 
-- Debian 10
+- Ubuntu 18.04
+
+## Supported platforms
+
+- [X] Linux
+- [ ] Windows
+- [ ] MacOS
 
 ## Run
 
 ```
-python3.10 main.py
+./main_bash.sh
 ```
