@@ -23,39 +23,45 @@ generate_ansible_hosts_file() {
     echo "ansible_python_interpreter=/usr/bin/python3" >> ./ansible_hosts
 }
 
-install_security_guides() {
-    echo ""
-    echo "Which guides do you want to install ?"
-    echo ""
-    echo "1 - All"
-    echo "2 - Debian guides"
-    echo "3 - Debian-based distributions (e.g. Ubuntu) guides"
-    echo "4 - Other distributions guides (RHEL, Fedora, etc.)"
-    echo "5 - Application-oriented guides (Firefox, JBoss, etc.)"
-    echo ""
-    read -p "Enter a number : " choice
-    case "$choice" in
-        "1")
-            bashCommand="apt install ssg-debian ssg-debderived ssg-nondebian ssg-applications"
+install_security_guides () {
+    cat <<EOM
+
+    Which guides do you want to install?
+
+    1 - All
+    2 - Debian guides
+    3 - Debian-based distributions (e.g. Ubuntu) guides
+    4 - Other distributions guides (RHEL, Fedora, etc.)
+    5 - Application-oriented guides (Firefox, JBoss, etc.)
+
+EOM
+    read -p "Enter a number: " choice
+
+    case $choice in
+        1)
+            bashCommands=( "apt install ssg-debian ssg-debderived ssg-nondebian ssg-applications" )
             ;;
-        "2")
-            bashCommand="apt install ssg-debian"
+        2)
+            bashCommands=( "apt install ssg-debian" "wget http://ftp.us.debian.org/debian/pool/main/s/scap-security-guide/ssg-debian_0.1.65-1_all.deb && apt install ./ssg-debian_0.1.65-1_all.deb" )
             ;;
-        "3")
-            bashCommand="apt install ssg-debderived"
+        3)
+            bashCommands=( "apt install ssg-debderived" )
             ;;
-        "4")
-            bashCommand="apt install ssg-nondebian"
+        4)
+            bashCommands=( "apt install ssg-nondebian" )
             ;;
-        "5")
-            bashCommand="apt install ssg-applications"
+        5)
+            bashCommands=( "apt install ssg-applications" )
             ;;
         *)
-            echo "Invalid choice"
-            exit
+            echo "Invalid input"
+            exit 1
             ;;
     esac
-    sudo $bashCommand
+
+    for bashCommand in "${bashCommands[@]}"; do
+        eval "$bashCommand"
+    done
 }
 
 audit_openscap() {
