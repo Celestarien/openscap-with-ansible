@@ -82,7 +82,7 @@ audit_openscap() {
     oscap $type_eval eval --profile $profile_openscap --results report_$name.xml /usr/share/scap-security-guide/ssg-$os-ds.xml
 
     echo "Creating the ansible file for $name"
-    oscap $type_eval generate fix --fix-type ansible --profile $profile_openscap --output remediation_$name.yml report
+    oscap $type_eval generate fix --fix-type ansible --profile $profile_openscap --output remediation_$name.yml report_$name.xml
 
 }
 
