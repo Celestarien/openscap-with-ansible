@@ -4,7 +4,7 @@ check_hosts_file_exist() {
     if [ ! -f "./hosts.txt" ]; then
         echo "Hosts file doesn't exist"
         echo "Create hosts file"
-        echo "Name|IP example|SSH user example|OS example|SSH private key path" > ./hosts.txt
+        echo "Name|IP example|SSH user example|OS example|SSH private key path|Profile OpenSCAP|Type eval" > ./hosts.txt
         echo "Hosts file created"
         echo "Edit hosts.txt and restart programm"
         exit
