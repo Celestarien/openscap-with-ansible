@@ -76,10 +76,10 @@ audit_openscap() {
 
     echo "Creating a report for $name"
     export SSH_ADDITIONAL_OPTIONS="-i $ssh_key_path"
-    ./oscap-ssh $ssh_user@$ip_address 22 $type_eval eval --report report_$name.html --profile $profile_openscap /usr/share/xml/scap/ssg/content/ssg-$os-$type_eval.xml
+    ./oscap-ssh $ssh_user@$ip_address 22 $type_eval eval --report report_$name.html --profile $profile_openscap /usr/share/scap-security-guide/ssg-$os-$type_eval.xml
 
     echo "Production of a compliance check report for $name"
-    oscap $type_eval eval --profile $profile_openscap --results report_$name.xml /usr/share/xml/scap/ssg/content/ssg-$os-ds.xml
+    oscap $type_eval eval --profile $profile_openscap --results report_$name.xml /usr/share/scap-security-guide/ssg-$os-ds.xml
 
     echo "Creating the ansible file for $name"
     oscap $type_eval generate fix --fix-type ansible --profile $profile_openscap --output remediation_$name.yml report
